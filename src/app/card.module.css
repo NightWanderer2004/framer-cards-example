@@ -1,0 +1,55 @@
+.card {
+   position: relative;
+   width: 100%;
+   height: 200px;
+   padding: 20px;
+   background-color: #f3f4f6;
+   border-radius: 14px;
+   cursor: pointer;
+   overflow: hidden;
+   display: flex;
+   flex-direction: column;
+}
+.card::before {
+   content: '';
+   display: none;
+   position: absolute;
+   top: 8px;
+   left: calc(50% - 18px);
+   width: 36px;
+   height: 4px;
+   background: #000;
+   opacity: 0.8;
+   border-radius: 20px;
+}
+.cardContent {
+   pointer-events: all;
+   cursor: text;
+}
+.cardContent h2 {
+   margin-bottom: 24px;
+}
+.cardContainer {
+   position: fixed;
+   z-index: 2;
+   top: 0;
+   left: 0;
+   padding-top: 20px;
+}
+.cardContainer .card {
+   padding-top: 32px;
+   height: auto;
+}
+.cardContainer .card::before {
+   display: block;
+}
+.modalBackdrop {
+   position: fixed;
+   z-index: 1;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background-color: rgba(0, 0, 0, 0.4);
+   cursor: pointer;
+}

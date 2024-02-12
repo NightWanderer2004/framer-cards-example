@@ -1,95 +1,94 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+'use client'
+import './global.css'
+import React, { useState } from 'react'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
+import Card from './Card'
+import s from './card.module.css'
 
-export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+export default function App() {
+   const [index, setIndex] = useState(false)
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+   const setCard = id => {
+      index === false && setIndex(id)
+   }
+   const closeCard = () => {
+      setIndex(false)
+   }
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+   const cards = [
+      {
+         id: 1,
+         title: 'Title 1',
+         count: 11,
+         content:
+            'Longer Content Text 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl ac tincidunt ultrices, nunc nunc ultrices nunc, nec tincidunt nunc nunc nec nunc.',
+      },
+      {
+         id: 2,
+         title: 'Title 2',
+         count: 6,
+         content:
+            'Longer Content Text 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl ac tincidunt ultrices, nunc nunc ultrices nunc, nec tincidunt nunc nunc nec nunc.',
+      },
+      {
+         id: 3,
+         title: 'Title 3',
+         count: 8,
+         content:
+            'Longer Content Text 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl ac tincidunt ultrices, nunc nunc ultrices nunc, nec tincidunt nunc nunc nec nunc.',
+      },
+      {
+         id: 4,
+         title: 'Title 4',
+         count: 14,
+         content:
+            'Longer Content Text 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl ac tincidunt ultrices, nunc nunc ultrices nunc, nec tincidunt nunc nunc nec nunc.',
+      },
+   ]
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+   return (
+      <LayoutGroup>
+         <motion.div className='card-list'>
+            {cards.map(card => (
+               <Card key={card.id} id={card.id} title={card.title} onClick={() => setCard(card.id)} />
+            ))}
+         </motion.div>
+         <AnimatePresence>
+            {index !== false && (
+               <>
+                  <Card
+                     id={index}
+                     title={cards.find(card => card.id === index).title}
+                     count={cards.find(card => card.id === index).count}
+                     content={cards.find(card => card.id === index).content}
+                     closeCard={closeCard}
+                     isSelected={true}
+                  />
+                  <motion.div
+                     className={s.modalBackdrop}
+                     onClick={() => closeCard()}
+                     variants={{
+                        hidden: {
+                           opacity: 0,
+                           transition: {
+                              duration: 0.16,
+                           },
+                        },
+                        visible: {
+                           opacity: 0.8,
+                           transition: {
+                              delay: 0.04,
+                              duration: 0.2,
+                           },
+                        },
+                     }}
+                     initial='hidden'
+                     exit='hidden'
+                     animate='visible'
+                  />
+               </>
+            )}
+         </AnimatePresence>
+      </LayoutGroup>
+   )
 }
